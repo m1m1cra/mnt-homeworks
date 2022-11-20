@@ -16,14 +16,12 @@
         ansible.builtin.get_url:
           url: "https://packages.clickhouse.com/deb/pool/main/c/{{item}}/{{ item }}_{{ clickhouse_version }}_all.deb"
           dest: "/tmp/temp/{{ item }}_{{ clickhouse_version }}_all_deb"
-          mode: '0755'
         with_items: "{{ clickhouse_packages }}"
       rescue:
         - name: Try to get clickhouse distrib
           ansible.builtin.get_url:
             url: "https://packages.clickhouse.com/deb/pool/main/c/clickhouse-common-static/clickhouse-common-static_{{ clickhouse_version }}_amd64.deb"
             dest: "/tmp/temp/clickhouse-common-static_{{ clickhouse_version }}_amd64.deb"
-            mode: '0755'
     - name: Install clickhouse packages
       apt:
         deb: "{{ item }}"
@@ -42,8 +40,8 @@
   hosts: vector-01
   handlers:
     - name: Start vector service
-      #become: true
-      #become_method: su
+      become: true
+      become_method: su
       ansible.builtin.service:
         name: vector
         state: restarted
@@ -55,12 +53,9 @@
         ansible.builtin.get_url:
           url: "https://packages.timber.io/vector/0.25.1/vector-{{ vector_version }}.x86_64.rpm"
           dest: "/tmp/vector-{{ vector_version }}.x86_64.rpm"
-         # mode: '0755'
         tags:
           - Get vector
     - name: Install vector
-      #become: true
-      #become_method: su
       yum:
         disable_gpg_check: true
         name:  "{{ item }}" 

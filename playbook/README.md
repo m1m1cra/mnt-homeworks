@@ -1,3 +1,4 @@
+```yaml
 ---
 - name: Install Clickhouse
   hosts: clickhouse
@@ -88,3 +89,4 @@
         mode: 0644
         #Запускаем handler при наличии изменений
       notify: Restart vector service
+```

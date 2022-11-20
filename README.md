@@ -301,8 +301,8 @@ root@bhdevops:/home/avdeevan/myvar/mnt-homeworks/08-ansible-02-playbook/playbook
 ```
 16. Подготовьте README.md файл по своему playbook. В нём должно быть описано: что делает playbook, какие у него есть параметры и теги.
 
-<code>[Текст ссылки](адрес "https://github.com/m1m1cra/mnt-homeworks/blob/master/playbook/README.md")
-</code>
+[README.md](https://github.com/m1m1cra/mnt-homeworks/blob/master/playbook/README.md)
+
 
 18. Готовый playbook выложите в свой репозиторий, поставьте тег `08-ansible-02-playbook` на фиксирующий коммит, в ответ предоставьте ссылку на него.
 ---

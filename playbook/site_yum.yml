@@ -10,13 +10,13 @@
         state: restarted
   tasks:
     - block:
-      - name: Get clickhouse distrib
-        become: true
-        become_method: su
-        ansible.builtin.get_url:
-          url: "https://packages.clickhouse.com/deb/pool/main/c/{{item}}/{{ item }}_{{ clickhouse_version }}_all.deb"
-          dest: "/tmp/temp/{{ item }}_{{ clickhouse_version }}_all_deb"
-        with_items: "{{ clickhouse_packages }}"
+        - name: Get clickhouse distrib
+          become: true
+          become_method: su
+          ansible.builtin.get_url:
+            url: "https://packages.clickhouse.com/deb/pool/main/c/{{ item }}/{{ item }}_{{ clickhouse_version }}_all.deb"
+            dest: "/tmp/temp/{{ item }}_{{ clickhouse_version }}_all_deb"
+          with_items: "{{ clickhouse_packages }}"
       rescue:
         - name: Try to get clickhouse distrib
           ansible.builtin.get_url:
@@ -26,9 +26,9 @@
       apt:
         deb: "{{ item }}"
       with_items:
-          - /tmp/temp/clickhouse-common-static_{{ clickhouse_version }}_amd64.deb
-          - /tmp/temp/clickhouse-client_{{ clickhouse_version }}_all_deb
-          - /tmp/temp/clickhouse-server_{{ clickhouse_version }}_all_deb
+        - /tmp/temp/clickhouse-common-static_{{ clickhouse_version }}_amd64.deb
+        - /tmp/temp/clickhouse-client_{{ clickhouse_version }}_all_deb
+        - /tmp/temp/clickhouse-server_{{ clickhouse_version }}_all_deb
       notify: Start clickhouse service
     - name: Create database
       ansible.builtin.command: "clickhouse-client -q 'create database logs;'"
@@ -47,22 +47,21 @@
         state: restarted
   tasks:
     - block:
-      - name: Get vector distrib
-        become: true
-        become_method: su
-        ansible.builtin.get_url:
-          url: "https://packages.timber.io/vector/0.25.1/vector-{{ vector_version }}.x86_64.rpm"
-          dest: "/tmp/vector-{{ vector_version }}.x86_64.rpm"
-        tags:
-          - Get vector
+        - name: Get vector distrib
+          become: true
+          become_method: su
+          ansible.builtin.get_url:
+            url: "https://packages.timber.io/vector/0.25.1/vector-{{ vector_version }}.x86_64.rpm"
+            dest: "/tmp/vector-{{ vector_version }}.x86_64.rpm"
+          tags:
+            - Get vector
     - name: Install vector
       yum:
         disable_gpg_check: true
-        name:  "{{ item }}" 
+        name: "{{ item }}"
         state: present
       with_items:
-          - /tmp/vector-{{ vector_version }}.x86_64.rpm
+        - /tmp/vector-{{ vector_version }}.x86_64.rpm
       tags:
         - Install vector
       notify: Start vector service
-
